@@ -1,0 +1,413 @@
+<!doctype html>
+<html lang="ar">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>معرض - اضغط لتكبير الصور</title>
+<style>
+  :root{
+    --bg:#0b0b0c;
+    --card:#0f1720;
+    --accent:#ffffff;
+    --overlay-bg: rgba(0,0,0,0.85);
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    font-family: "Segoe UI", Tahoma, Arial, sans-serif;
+    background:linear-gradient(180deg,#000000 0%, #000000 100%);
+    color:var(--accent);
+    min-height:100vh;
+    padding:28px;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  h1{margin:0 0 18px 0; font-size:20px; text-align:center}
+
+  /* gallery grid */
+  .gallery{
+    display:grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap:12px;
+    max-width:1000px;
+    margin:0 auto;
+  }
+  .thumb{
+    background:var(--card);
+    border-radius:8px;
+    overflow:hidden;
+    cursor:pointer;
+    display:block;
+    position:relative;
+    padding:6px;
+    transition:transform .18s ease, box-shadow .18s ease;
+  }
+  .thumb:hover{ transform:translateY(-6px); box-shadow:0 8px 24px rgba(2,6,23,0.6) }
+  .thumb img{
+    width:100%;
+    height:120px;
+    object-fit:cover;
+    display:block;
+    border-radius:6px;
+  }
+  .thumb .caption{
+    font-size:13px;
+    margin-top:8px;
+    color:#cfe3ff;
+    text-align:center;
+  }
+
+  /* overlay / lightbox */
+  .overlay{
+    position:fixed;
+    inset:0;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    background:var(--overlay-bg);
+    z-index:9999;
+    padding:20px;
+  }
+  .overlay.open{ display:flex; }
+  .viewer{
+    max-width:1100px;
+    width:100%;
+    max-height:92vh;
+    position:relative;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .viewer img{
+    max-width:100%;
+    max-height:92vh;
+    border-radius:8px;
+    box-shadow:0 20px 50px rgba(0,0,0,0.6);
+  }
+
+  /* controls */
+  .close-btn{
+    position:fixed;
+    top:18px;
+    right:18px;
+    background:rgba(0,0,0,0.45);
+    border:1px solid rgb(0, 0, 0);
+    color:var(--accent);
+    padding:8px 10px;
+    border-radius:8px;
+    cursor:pointer;
+    z-index:10010;
+    font-size:16px;
+  }
+  .nav-btn{
+    position:absolute;
+    top:50%;
+    transform:translateY(-50%);
+    background:rgba(0,0,0,0.35);
+    border:none;
+    color:var(--accent);
+    font-size:28px;
+    width:56px;
+    height:56px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    user-select:none;
+  }
+  .nav-btn:active{ transform:translateY(-50%) scale(.98) }
+  .nav-left{ left:-70px }
+  .nav-right{ right:-70px }
+
+  /* responsive adjustments for small screens */
+  @media (max-width:700px){
+    .thumb img{ height:100px }
+    .nav-left{ left:6px }
+    .nav-right{ right:6px }
+    .nav-btn{ width:44px; height:44px; font-size:22px; }
+    .close-btn{ top:12px; right:12px; padding:6px 8px; }
+  }
+
+  /* caption under large image */
+  .large-caption{
+    margin-top:10px;
+    text-align:center;
+    color:#e6f0ff;
+    font-size:15px;
+  }
+  .logo {
+      width: 520px;   /* غيّر الرقم للتحكم بالقياس */
+      height: auto; }
+
+      h3{
+        text-align: center;
+        font-size: 28px;
+        color: #ffffff;
+      }
+
+  /* css لقاىمة المواصفات */
+  body {
+  font-family: "Segoe UI", Tahoma, sans-serif;
+  background-color: #f4f6f8;
+  margin: 0;
+  padding: 20px;
+  color: #1a1a1a;
+}
+
+ .car-container {
+  max-width: 900px;
+  margin: 0 auto;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  overflow: hidden;
+}
+
+.car-header {
+  background-color: #0b1220;
+  color: #fff;
+  padding: 20px 30px;
+  text-align: center;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.car-image {
+  width: 100%;
+  max-height: 400px;
+  object-fit: cover;
+  display: block;
+}
+
+.specs-section {
+  padding: 20px 30px;
+}
+
+.specs-section h2 {
+  font-size: 20px;
+  margin-bottom: 12px;
+  color: #0b1220;
+}
+
+.specs-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.specs-list li {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid #e0e0e0;
+  font-size: 16px;
+}
+
+.specs-list li span:first-child {
+  font-weight: 600;
+  color: #333;
+}
+
+.car-description {
+  padding: 20px 30px;
+  font-size: 15px;
+  line-height: 1.6;
+  color: #555;
+}
+
+@media(max-width:600px){
+  .specs-list li {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .specs-list li span:last-child {
+    margin-top: 5px;
+    font-weight: 500;
+  }
+}
+</style>
+</head>
+<body>
+  <h1><img src="logo2.png" alt="logo" 
+         class="logo"></h1>
+
+         <h3>2025 Aston Martin DB12 v12</h3>
+
+  <div class="gallery" id="gallery">
+    <!-- عدّل المسارات أو استبدل الصور برابط خارجي أو محلي -->
+    <a class="thumb" data-index="0" >
+      <img src="car2.jpg.avif" alt="صورة 1">
+      <div class="caption"></div>
+    </a>
+
+    <a class="thumb" data-index="1" >
+      <img src="car1.jpg.avif" alt="صورة 2">
+      <div class="caption"></div>
+    </a>
+
+    <a class="thumb" data-index="2" >
+      <img src="car3.jpg" alt="صورة 3">
+      <div class="caption"></div>
+    </a>
+
+    <a class="thumb" data-index="3" data-caption=>
+      <img src="car4.jpg" alt="صورة 4">
+      <div class="caption"></div>
+    </a>
+  </div>
+<!--قاىمة المواصفات-->
+  <div class="car-container">
+  <div class="car-header">2025 Aston Martin DB12 v12</div>
+
+  <div class="specs-section">
+    <h2>مواصفات السيارة</h2>
+    <ul class="specs-list">
+      <li><span>المحرك:</span>4.0 لتر  v8 توين تيربو </li>
+      <li><span>القوة:</span> 671 حصان</li>
+      <li><span>ناقل الحركة:</span> بثماني سرعات أوتوماتيك</li>
+      <li><span>التسارع:</span> 0-100 كم/س في 3.6 ثانية</li>
+      <li><span>استهلاك الوقود:</span> 20 لتر / 100 كم</li>
+      <li><span>سعة الخزان:</span> 50 لتر</li>
+      <li><span>نظام الأمان:</span> ABS, EBD, Airbags</li>
+    </ul>
+  </div>
+
+  <div class="car-description">
+    Although the DB11 made for a lovely cruiser, it never quite had the dynamic aptitude to be a true driver’s car. That changes with the DB12—perhaps to a fault.
+
+There’s no question that the DB12 is far sportier than its predecessor. Of course, its mighty twin-turbocharged V-8 and the ferocious noises it makes are key contributors to that. However, the DB12’s chassis revisions do more to make it a remarkably sporty Aston Martin. Its steering and braking are wonderfully precise, while the broad rear tires and software controls ensure tremendous traction. But the DB12 Volante’s super-stiff ride quality benefits sportiness at a considerable detriment to comfort.
+
+Beyond its aggressive personality, the DB12 distinguishes itself from the DB11 with exterior and interior design that’s somehow even more beautiful. The cabin is thoroughly reworked in a way that improves aesthetics, technology, and ease of use. Aston Martin appreciably bucks an industry trend by preserving plenty of physical buttons and switches inside the cabin, yet the automaker’s new infotainment system is much better arranged and quicker than before.
+
+Aston Marin seeks to enter a new era, one where it competes among makers of exotic sports cars more than luxurious grand tourers. Even if the DB12 might be too intense for some drivers, others will delight in the car’s awesome dynamic capabilities—and all will like looking at it even more.
+
+What Engine Is in the Aston Martin DB12?
+Despite what the number in its name might imply, the DB12 does not use a V-12 engine—that’ll be reserved for Aston Martin’s even higher-end cars. Instead, it has a twin-turbocharged 4.0-liter V-8 built by Mercedes-AMG. With Aston Martin’s unique tuning applied, this engine produces 671 hp and 590 lb-ft of torque. The automaker says that’s good for a 3.5-second 0–60-mph time and a top speed above 200 mph. Fuel economy comes in at 15/22 mpg city/highway.
+
+Safety and Driver Assist Features
+The 2025 Aston Martin DB12 comes with a generous number of driver assist and active safety features. Among these are front automatic emergency braking, side and rear cross-traffic alert, blind-spot monitoring, lane departure warning, lane keep assist, adaptive cruise control, and automatic high-beams.
+
+How Many Seats in the DB12?
+There are four seats in the DB12, although the back seats are tiny—whoever’s up front will have to be gracious in sliding their seats far forward to provide any legroom to those behind. Additionally, the coupe version offers very little headroom; putting the top down in the Volante provides more space for all aboard. Perhaps the back seats are best thought of as additional storage to supplement the 9.3-cubic-foot trunk.
+  </div>
+</div>
+
+  <!-- Overlay / lightbox -->
+  <div class="overlay" id="overlay" role="dialog" aria-modal="true" aria-hidden="true">
+    <button class="close-btn" id="closeBtn" aria-label="إغلاق">✕</button>
+
+    <div class="viewer" id="viewer">
+      <button class="nav-btn nav-left" id="prevBtn" aria-label="الصورة السابقة">‹</button>
+
+      <img id="largeImg" src="" alt="صورة مكبرة">
+
+      <button class="nav-btn nav-right" id="nextBtn" aria-label="الصورة التالية">›</button>
+    </div>
+
+    <div class="large-caption" id="largeCaption"></div>
+  </div>
+
+<script>
+  (function(){
+    const thumbs = Array.from(document.querySelectorAll('.thumb'));
+    const overlay = document.getElementById('overlay');
+    const largeImg = document.getElementById('largeImg');
+    const largeCaption = document.getElementById('largeCaption');
+    const closeBtn = document.getElementById('closeBtn');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+
+    // Build an array of image sources + captions from the thumbnails
+    const images = thumbs.map(t=>{
+      const img = t.querySelector('img');
+      return {
+        src: img.src,
+        alt: img.alt || '',
+        caption: t.getAttribute('data-caption') || ''
+      };
+    });
+
+    let currentIndex = 0;
+
+    function openAt(index){
+      currentIndex = (index + images.length) % images.length;
+      const it = images[currentIndex];
+      largeImg.src = it.src;
+      largeImg.alt = it.alt;
+      largeCaption.textContent = it.caption;
+      overlay.classList.add('open');
+      overlay.setAttribute('aria-hidden', 'false');
+
+      // prevent page scroll when overlay open
+      document.body.style.overflow = 'hidden';
+      // focus for keyboard interaction
+      closeBtn.focus();
+    }
+
+    function closeOverlay(){
+      overlay.classList.remove('open');
+      overlay.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+      // clear src to release memory on some browsers
+      // (keeps UX clean)
+      largeImg.src = '';
+    }
+
+    // attach click on thumbnails
+    thumbs.forEach((t, i) => {
+      t.addEventListener('click', (e) => {
+        e.preventDefault();
+        openAt(i);
+      });
+    });
+
+    // navigation
+    prevBtn.addEventListener('click', ()=> openAt(currentIndex - 1));
+    nextBtn.addEventListener('click', ()=> openAt(currentIndex + 1));
+    closeBtn.addEventListener('click', closeOverlay);
+
+    // click on overlay background closes (but not when clicking the image)
+    overlay.addEventListener('click', (e)=>{
+      if(e.target === overlay) closeOverlay();
+    });
+
+    // keyboard controls
+    document.addEventListener('keydown', (e)=>{
+      if(!overlay.classList.contains('open')) return;
+      if(e.key === 'Escape') closeOverlay();
+      if(e.key === 'ArrowLeft') openAt(currentIndex - 1);
+      if(e.key === 'ArrowRight') openAt(currentIndex + 1);
+    });
+
+    // optional: double-click on large image to zoom-in further (native browser zoom)
+    largeImg.addEventListener('dblclick', ()=>{
+      // toggle CSS transform zoom
+      const isZoomed = largeImg.classList.toggle('zoomed');
+      if(isZoomed){
+        largeImg.style.transform = 'scale(1.6)';
+        largeImg.style.cursor = 'zoom-out';
+      } else {
+        largeImg.style.transform = '';
+        largeImg.style.cursor = '';
+      }
+    });
+
+    // small accessibility improvement - trap focus inside overlay (basic)
+    overlay.addEventListener('keydown', (e)=>{
+      if(e.key !== 'Tab' || !overlay.classList.contains('open')) return;
+      const focusables = [closeBtn, prevBtn, nextBtn];
+      const idx = focusables.indexOf(document.activeElement);
+      if(e.shiftKey){
+        // shift+tab
+        if(idx <= 0){ focusables[focusables.length-1].focus(); e.preventDefault(); }
+      } else {
+        // tab
+        if(idx === focusables.length-1){ focusables[0].focus(); e.preventDefault(); }
+      }
+    });
+
+  })();
+</script>
+</body>
+</html>
